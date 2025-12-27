@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activación VIP - Mera Vuelta</title>
+    <style>
+        body { background-color: #FFD700; font-family: 'Arial Black', sans-serif; text-align: center; padding: 20px; margin: 0; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .card { background: white; padding: 30px; border-radius: 30px; border: 5px solid #111; display: inline-block; box-shadow: 10px 10px 0 #111; max-width: 400px; width: 90%; }
+        
+        h1 { color: #111; font-size: 1.4rem; text-transform: uppercase; margin: 0; line-height: 1.2; }
+        
+        .clave-container { margin: 20px 0; }
+        .clave { font-size: 2.8rem; color: #D32F2F; border: 4px dashed #111; padding: 15px; background: #fffde7; letter-spacing: 2px; display: block; }
+        
+        p { color: #333; font-weight: bold; margin: 5px 0; font-size: 1rem; }
+        
+        .btn-game {
+            display: inline-block;
+            background-color: #111;
+            color: #FFD700;
+            padding: 20px;
+            text-decoration: none;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-top: 20px;
+            text-transform: uppercase;
+            box-shadow: 5px 5px 0 rgba(0,0,0,0.2);
+            width: 100%;
+            box-sizing: border-box;
+            transition: transform 0.1s;
+        }
+        .btn-game:active { transform: scale(0.95); }
+
+        .steps { text-align: left; margin-top: 20px; font-family: sans-serif; background: #f9f9f9; padding: 15px; border-radius: 15px; border: 2px solid #eee; }
+        .steps b { color: #D32F2F; }
+
+        .warning { color: #D32F2F; font-size: 0.8rem; margin-top: 15px; font-family: sans-serif; font-weight: normal; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>TU CÓDIGO ÚNICO DE ACTIVACIÓN:</h1>
+        
+        <div class="clave-container">
+            <div id="clave-display" class="clave">...</div>
+        </div>
+
+        <div class="steps">
+            <p><b>1.</b> Copia el código de arriba.</p>
+            <p><b>2.</b> Toca el botón de abajo.</p>
+            <p><b>3.</b> Pégalo dentro del juego.</p>
+        </div>
+
+        <a href="https://quevueltaome.netlify.app/" class="btn-game">¡ENTRAR AL JUEGO!</a>
+        
+        <div class="warning">
+            ⚠️ <b>IMPORTANTE:</b> Este código vincula el juego a este celular. No funcionará en otros dispositivos.
+        </div>
+    </div>
+
+    <script>
+        // LA SEMILLA DEBE SER LA MISMA QUE EN EL INDEX.HTML
+        const SEMILLA = "PARRANDA_SEC_2025"; 
+
+        function generarClaveDelDia() {
+            const fecha = new Date();
+            // Genera la clave basada en Año-Mes-Día UTC
+            const diaString = fecha.getUTCFullYear() + "-" + (fecha.getUTCMonth() + 1) + "-" + fecha.getUTCDate();
+            let hash = 0;
+            const cadenaCompleta = SEMILLA + diaString;
+            for (let i = 0; i < cadenaCompleta.length; i++) {
+                hash = ((hash << 5) - hash) + cadenaCompleta.charCodeAt(i);
+                hash |= 0; 
+            }
+            // Retorna formato MV-XXXXX
+            return "MV-" + Math.abs(hash).toString(36).toUpperCase().substring(0, 5);
+        }
+
+        // Mostrar la clave generada
+        document.getElementById('clave-display').innerText = generarClaveDelDia();
+    </script>
+</body>
+</html>
