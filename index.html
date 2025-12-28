@@ -72,7 +72,7 @@
         
         /* ESTILO BOTÓN OMITIR */
         .btn-omitir {
-            background-color: #D32F2F; /* Rojo Sangre */
+            background-color: #D32F2F; 
             color: white;
             border: 3px solid #111;
             padding: 15px;
@@ -136,13 +136,71 @@
         .scroll-content * { pointer-events: auto; } 
         .scroll-content h3 { margin-top: 15px; color: #D32F2F; font-family: 'Arial Black', sans-serif; font-size: 1rem; text-transform: uppercase; pointer-events: none; }
         .scroll-content h3:first-child { margin-top: 0; }
+
+        /* LOGO EN HOME */
+        .logo-main { width: 150px; height: 150px; object-fit: contain; margin-bottom: 10px; filter: drop-shadow(5px 5px 0px rgba(0,0,0,0.2)); pointer-events: none; }
+
+        /* MODAL DE EXPLOSIÓN */
+        #modal-explosion {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 9999;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            animation: shake 0.5s;
+        }
+        #modal-explosion.active { display: flex; }
+        
+        .modal-content {
+            background: #FFD700;
+            border: 5px solid #111;
+            padding: 30px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 350px;
+            text-align: center;
+            box-shadow: 0 0 50px rgba(255, 0, 0, 0.5);
+        }
+
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
     </style>
 </head>
 <body oncontextmenu="return false" onselectstart="return false" ondragstart="return false">
 
+    <!-- MODAL EXPLOSIÓN (Oculto por defecto) -->
+    <div id="modal-explosion">
+        <div class="modal-content">
+            <h1 style="color:#D32F2F; font-size:3rem; margin:0;">¡PUM!</h1>
+            <h2 style="margin-top:0;">SE ESTALLÓ LA OLLA</h2>
+            <div id="modal-mensaje" style="font-size:1.5rem; font-weight:bold; margin:20px 0; line-height:1.2;">...</div>
+            
+            <div style="display:flex; gap:10px;">
+                <!-- IZQUIERDA: SOY UNA LOCA (NEGRO) -->
+                <button onclick="soyUnaLoca()" style="background:#111; color:#FFD700; width:50%; font-size:1rem; padding:15px; border:2px solid #FFD700;">¡SOY UNA LOCA!</button>
+                <!-- DERECHA: HÁGALE (VERDE) -->
+                <button onclick="aceptarReto()" style="background:#4CAF50; color:#fff; width:50%; font-size:1rem; padding:15px;">¡HÁGALE!</button>
+            </div>
+        </div>
+    </div>
+
     <!-- LOGIN -->
     <div id="screen-login" class="screen">
-        <img src="logo.png" style="width:110px; border-radius:20px; border:3px solid #111; margin-bottom:15px;" onerror="this.style.display='none'">
+        <img src="logo.png" style="width:110px;" onerror="this.style.display='none'">
         <h2>ACTIVACIÓN DE LICENCIA</h2>
         <input type="text" id="pass-input" placeholder="MV-XXXXX">
         <button onclick="verificarClave()">ACTIVAR VUELTA</button>
@@ -158,13 +216,22 @@
 
     <!-- HOME -->
     <div id="screen-home" class="screen">
-        <h1 style="font-size: 2.5rem;">La Olla Pitadora</h1>
+        <!-- LOGO GRANDE -->
+        <img src="logo.png" class="logo-main" alt="La Olla Pitadora">
+        
+        <h1 style="font-size: 2.2rem; margin-top:0;">La Olla Pitadora</h1>
         <p style="margin-bottom: 20px;">¡Ojo que esa vaina estalla!</p>
-        <button onclick="showScreen('screen-setup')" style="background-color: #111; color: #FFD700; border: 3px solid #111; height: 80px; font-size: 1.5rem;">¡ARMAR PARCHE!</button>
+        
+        <button onclick="showScreen('screen-setup')" style="background-color: #111; color: #FFD700; border: 3px solid #111; height: 70px; font-size: 1.4rem;">¡ARMAR PARCHE!</button>
+        
         <div style="display: flex; gap: 10px; width: 100%;">
             <button onclick="showScreen('screen-install')" class="btn-secondary" style="font-size: 0.8rem; padding: 10px;">📲 INSTALAR APP</button>
             <button onclick="showScreen('screen-instructions')" class="btn-secondary" style="font-size: 0.8rem; padding: 10px;">❓ CÓMO JUGAR</button>
         </div>
+
+        <!-- Botón Compartir -->
+        <button onclick="compartirApp()" class="btn-secondary" style="margin-top:0; font-size: 0.9rem; padding: 12px; background:#FFD700; border: 2px dashed #111;">📢 COMPARTIR JUEGO</button>
+        
         <button onclick="showScreen('screen-sugerencias')" class="link-discreto" style="opacity:0.7; font-size:0.8rem;">💡 Sugerencias y Mejoras</button>
         <button onclick="actualizarApp()" id="btn-update" class="link-discreto" style="opacity:0.5; font-size:0.7rem; margin-top:20px;">🔄 Buscar Actualizaciones</button>
     </div>
@@ -230,7 +297,7 @@
         <div style="width: 100%; margin-bottom: 20px;">
             <div class="region-option penitencia-check">
                 <input type="checkbox" id="opt-penitencias" value="penitencias" checked>
-                <label for="opt-penitencias">😈 PENITENCIAS</label>
+                <label for="opt-penitencias">😈 ¡PENITENCIAS!</label>
             </div>
         </div>
 
@@ -256,6 +323,7 @@
 
     <!-- JUEGO -->
     <div id="screen-game" class="screen">
+        <button class="btn-cancel" onclick="cancelarPartida()">✖</button>
         <h3 id="tema-juego" style="color:#D32F2F; text-transform:uppercase;">TEMA</h3>
         <div class="card"><div id="letra-display" class="big-text">A</div></div>
         <button onclick="cambiarLetra()" style="height:120px; font-size:1.8rem;">SIGUIENTE</button>
@@ -287,9 +355,9 @@
     <div id="screen-sugerencias" class="screen">
         <h2 style="font-size:1.5rem; margin-bottom:10px;">BUZÓN DE LA OLLA</h2>
         <p style="font-family:sans-serif; font-size:0.9rem; margin-top:0; margin-bottom:20px; line-height:1.4;">¿Qué temas faltan? ¿Qué penitencia agregamos? <br> ¡Hable pues!</p>
-        <form name="sugerencias" method="POST" data-netlify="true" style="width:100%;">
-            <input type="hidden" name="form-name" value="sugerencias" />
-            <textarea name="mensaje" placeholder="Ej: Agreguen penitencias de bailar reggaeton..." required></textarea>
+        <!-- Formulario FORMSPREE -->
+        <form id="form-sugerencias" action="https://formspree.io/f/mzdbjdbd" method="POST" style="width:100%;">
+            <textarea name="message" placeholder="Ej: Agreguen penitencias de bailar reggaeton..." required></textarea>
             <button type="submit" style="background:#4CAF50; margin-top:10px;">ENVIAR</button>
         </form>
         <button onclick="showScreen('screen-home')" style="background:transparent; border:none; text-decoration:underline; box-shadow:none; margin-top:15px; color:#555;">Volver sin enviar</button>
@@ -347,6 +415,52 @@
             gain.connect(audioCtx.destination);
             osc.start();
             osc.stop(audioCtx.currentTime + 0.4);
+        }
+
+        // NUEVO: SONIDO DE EXPLOSIÓN SINTÉTICA
+        function playSyntheticExplosion() {
+            if (!audioCtx) return;
+            const bufferSize = audioCtx.sampleRate * 2; // 2 segundos
+            const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+            const data = buffer.getChannelData(0);
+            
+            // Ruido Blanco
+            for (let i = 0; i < bufferSize; i++) {
+                data[i] = Math.random() * 2 - 1;
+            }
+            
+            const noise = audioCtx.createBufferSource();
+            noise.buffer = buffer;
+            
+            // Filtro Lowpass para que suene grave (explosión) y no estática
+            const filter = audioCtx.createBiquadFilter();
+            filter.type = 'lowpass';
+            filter.frequency.value = 1000;
+            filter.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 1);
+
+            const gain = audioCtx.createGain();
+            gain.gain.setValueAtTime(1, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 1.5);
+
+            noise.connect(filter);
+            filter.connect(gain);
+            gain.connect(audioCtx.destination);
+            noise.start();
+        }
+
+        // --- COMPARTIR APP ---
+        function compartirApp() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'La Olla Pitadora',
+                    text: '¡Ojo que esa vaina estalla! Juguemos un parche bien bueno.',
+                    url: window.location.href
+                }).catch(console.error);
+            } else {
+                // Fallback: Copiar al portapapeles
+                navigator.clipboard.writeText(window.location.href);
+                alert("Link copiado al portapapeles. ¡Pásalo!");
+            }
         }
 
         function actualizarApp() {
@@ -461,11 +575,20 @@
         }
 
         function sacarDeBolsa(bolsa, funcionLlenado) {
+            // FIX: Validar si la bolsa esta vacía ANTES de sacar
             if (bolsa.length === 0) {
                 if(funcionLlenado === "temas") { bolsaTemas = armarBolsaTemas(); return bolsaTemas.pop(); }
                 else if(funcionLlenado === "penitencias") { llenarBolsaPenitencias(); return bolsaPenitencias.pop(); }
-                else { funcionLlenado(); }
+                else { funcionLlenado(); } // Llenar letras
             }
+            
+            // Re-chequeo de seguridad: si aun esta vacía (caso raro), forzar llenado
+            if (bolsa.length === 0) {
+                 if(funcionLlenado === "temas") bolsaTemas = armarBolsaTemas();
+                 else if(funcionLlenado === "penitencias") llenarBolsaPenitencias();
+                 else funcionLlenado();
+            }
+
             const indiceRandom = Math.floor(Math.random() * bolsa.length);
             const item = bolsa[indiceRandom];
             bolsa.splice(indiceRandom, 1);
@@ -580,40 +703,95 @@
             juegoActivo = false;
             clearTimeout(timerID);
             
-            // INTENTO DE REPRODUCIR MEME (CON BACKUP DE SEGURIDAD)
+            // 1. SONIDO DE EXPLOSIÓN SINTÉTICA
+            playSyntheticExplosion();
+
+            // 2. SONIDO DE MEME (Secundario)
             let randomMeme = Math.floor(Math.random() * CANTIDAD_MEMES) + 1;
             let memeAudio = new Audio(`memes/${randomMeme}.mp3`);
             let backupAudio = new Audio('memes/1.mp3');
             
-            // Si el meme falla (404 o error), suena el respaldo seguro (1.mp3)
             memeAudio.onerror = function() {
-                console.log("Error cargando meme, usando backup...");
                 backupAudio.currentTime = 0;
                 backupAudio.play().catch(e => console.log("Backup audio error:", e));
             };
             
-            memeAudio.play().catch(e => {
-                console.log("Error reproduciendo meme, usando backup...", e);
-                backupAudio.currentTime = 0;
-                backupAudio.play();
-            });
+            // Retardo leve
+            setTimeout(() => {
+                memeAudio.play().catch(e => {
+                    backupAudio.currentTime = 0;
+                    backupAudio.play();
+                });
+            }, 800);
             
-            // LÓGICA DE PENITENCIAS VS FONDO BLANCO
+            // VISUAL
             const hayPenitencias = document.getElementById('opt-penitencias').checked;
             const resultadoDisplay = document.getElementById('resultado-final');
+            const mensajeModal = document.getElementById('modal-mensaje');
+            const modal = document.getElementById('modal-explosion');
+            
+            let textoResultado = "";
             
             if (hayPenitencias) {
                 const penitencia = sacarDeBolsa(bolsaPenitencias, "penitencias");
-                resultadoDisplay.innerText = "😈 " + penitencia.toUpperCase();
+                textoResultado = "😈 " + penitencia.toUpperCase();
                 resultadoDisplay.style.color = "#D32F2F";
             } else {
-                resultadoDisplay.innerText = "FONDO BLANCO O PENITENCIA";
+                textoResultado = "FONDO BLANCO O PENITENCIA";
                 resultadoDisplay.style.color = "#111";
             }
 
+            resultadoDisplay.innerText = textoResultado;
+            mensajeModal.innerText = textoResultado;
+
             showScreen('screen-end');
+            
+            // MOSTRAR MODAL
+            modal.classList.add('active');
+
             if(navigator.vibrate) navigator.vibrate([1000, 200, 1000]);
         }
+
+        function cerrarModal() {
+            document.getElementById('modal-explosion').classList.remove('active');
+        }
+
+        function aceptarReto() {
+            cerrarModal();
+        }
+
+        function soyUnaLoca() {
+            let audioLoca = new Audio('memes/15a.mp3');
+            audioLoca.play().catch(e => console.log(e));
+            cerrarModal();
+        }
+
+        // --- MANEJO DEL FORMULARIO DE SUGERENCIAS (AJAX) ---
+        const formSugerencias = document.getElementById("form-sugerencias");
+        formSugerencias.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const btn = formSugerencias.querySelector("button");
+            const originalText = btn.innerText;
+            btn.innerText = "Enviando...";
+            btn.disabled = true;
+
+            const data = new FormData(formSugerencias);
+            try {
+                await fetch(formSugerencias.action, {
+                    method: formSugerencias.method,
+                    body: data,
+                    headers: { 'Accept': 'application/json' }
+                });
+                alert("¡Mensaje recibido! Gracias, mor.");
+                formSugerencias.reset();
+                showScreen('screen-home'); 
+            } catch (error) {
+                alert("Uy, hubo un error enviando. Intenta más tarde.");
+            } finally {
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }
+        });
     </script>
 </body>
 </html>
