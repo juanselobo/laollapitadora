@@ -130,7 +130,8 @@
         
         .link-discreto { background: transparent; border: none; color: #111; font-size: 0.85rem; text-decoration: underline; margin-top: 15px; padding: 10px; box-shadow: none; text-transform: none; opacity: 0.9; cursor: pointer; }
 
-        .btn-cancel { position: absolute; top: 0; right: 0; width: 50px; height: 50px; background: #D32F2F; color: white; border-radius: 50%; font-size: 1.5rem; line-height: 1; padding: 0; margin: 0; box-shadow: 2px 2px 0 rgba(0,0,0,0.3); z-index: 100; display: flex; justify-content: center; align-items: center; pointer-events: auto; }
+        /* ESTE ES EL BOTÓN "X" QUE FUE ELIMINADO - YA NO ESTÁ EN EL HTML */
+        /* .btn-cancel { position: absolute; top: 0; right: 0; width: 50px; height: 50px; background: #D32F2F; color: white; border-radius: 50%; font-size: 1.5rem; line-height: 1; padding: 0; margin: 0; box-shadow: 2px 2px 0 rgba(0,0,0,0.3); z-index: 100; display: flex; justify-content: center; align-items: center; pointer-events: auto; } */
 
         .scroll-content { width: 100%; max-height: 60vh; overflow-y: auto; text-align: left; background: rgba(255,255,255,0.95); border: 3px solid #111; border-radius: 15px; padding: 15px; box-sizing: border-box; margin-bottom: 15px; font-family: 'Arial', sans-serif; font-size: 0.9rem; line-height: 1.4; color: #222; pointer-events: auto; }
         .scroll-content * { pointer-events: auto; } 
@@ -323,9 +324,10 @@
 
     <!-- JUEGO -->
     <div id="screen-game" class="screen">
-        <button class="btn-cancel" onclick="cancelarPartida()">✖</button>
+        <!-- SE ELIMINÓ LA X DE ACÁ -->
         <h3 id="tema-juego" style="color:#D32F2F; text-transform:uppercase;">TEMA</h3>
         <div class="card"><div id="letra-display" class="big-text">A</div></div>
+        
         <button onclick="cambiarLetra()" style="height:120px; font-size:1.8rem;">SIGUIENTE</button>
         
         <!-- BOTÓN OMITIR -->
@@ -337,13 +339,13 @@
         <button onclick="cancelarPartida()" class="link-discreto" style="margin-top:15px; color:#D32F2F; font-weight:bold;">🛑 Terminar Partida</button>
     </div>
 
-    <!-- FINAL (AQUÍ SALE LA PENITENCIA O EL FONDO BLANCO) -->
+    <!-- FINAL (ESTA PANTALLA YA NO MUESTRA EL RESULTADO, LO HACE EL MODAL) -->
     <div id="screen-end" class="screen">
         <h1 style="font-size:4rem; color:#D32F2F; margin:0;">¡ESTALLÓ!</h1>
         <h2 style="margin-top:-10px;">PERDIÓ EL AÑO</h2>
         
         <div class="card">
-            <div id="resultado-final" style="font-size:1.4rem; font-weight:bold; line-height:1.2;">FONDO BLANCO O PENITENCIA</div>
+            <div id="resultado-final" style="font-size:1.4rem; font-weight:bold; line-height:1.2; opacity:0;"></div> <!-- Resultado final invisible acá -->
         </div>
         
         <button onclick="otraRonda()" style="background-color: #111; color: #FFD700; border: 3px solid #FFD700;">¡OTRA RONDA!</button>
@@ -355,7 +357,6 @@
     <div id="screen-sugerencias" class="screen">
         <h2 style="font-size:1.5rem; margin-bottom:10px;">BUZÓN DE LA OLLA</h2>
         <p style="font-family:sans-serif; font-size:0.9rem; margin-top:0; margin-bottom:20px; line-height:1.4;">¿Qué temas faltan? ¿Qué penitencia agregamos? <br> ¡Hable pues!</p>
-        <!-- Formulario FORMSPREE -->
         <form id="form-sugerencias" action="https://formspree.io/f/mzdbjdbd" method="POST" style="width:100%;">
             <textarea name="message" placeholder="Ej: Agreguen penitencias de bailar reggaeton..." required></textarea>
             <button type="submit" style="background:#4CAF50; margin-top:10px;">ENVIAR</button>
@@ -367,12 +368,13 @@
         const SEMILLA = "PARRANDA_SEC_2025";
         
         // --- 🎵 CONFIGURACIÓN DE MEMES 🎵 ---
-        // Asegúrate de que los archivos sean 1.mp3, 2.mp3... hasta este número
         const CANTIDAD_MEMES = 20; 
 
         // --- MOTOR DE AUDIO ---
         let audioCtx = null;
-        let failAudio = new Audio('fail.mp3');
+        // El fail.mp3 ya no existe como fallback, ahora memes/1.mp3 es el respaldo
+        // let failAudio = new Audio('fail.mp3'); // Comentado
+        let backupAudio = new Audio('memes/1.mp3'); 
 
         function initAudio() {
             if (!audioCtx) {
@@ -382,7 +384,8 @@
             if (audioCtx.state === 'suspended') {
                 audioCtx.resume();
             }
-            failAudio.load();
+            // failAudio.load(); // Comentado
+            backupAudio.load(); // Asegurarse que el respaldo esté precargado
         }
 
         // Sonido de "Olla Pitando" (Tic sintético)
@@ -407,24 +410,23 @@
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(150, audioCtx.currentTime); 
-            osc.frequency.linearRampToValueAtTime(50, audioCtx.currentTime + 0.4); 
+            osc.frequency.setValueAtTime(100, audioCtx.currentTime); // Más grave
+            osc.frequency.linearRampToValueAtTime(20, audioCtx.currentTime + 0.2); // Más breve y grave
             gain.gain.setValueAtTime(0.8, audioCtx.currentTime);
-            gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+            gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
             osc.connect(gain);
             gain.connect(audioCtx.destination);
             osc.start();
-            osc.stop(audioCtx.currentTime + 0.4);
+            osc.stop(audioCtx.currentTime + 0.25); // Duración total
         }
 
-        // NUEVO: SONIDO DE EXPLOSIÓN SINTÉTICA
+        // SONIDO DE EXPLOSIÓN SINTÉTICA
         function playSyntheticExplosion() {
             if (!audioCtx) return;
-            const bufferSize = audioCtx.sampleRate * 2; // 2 segundos
+            const bufferSize = audioCtx.sampleRate * 2; 
             const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
             const data = buffer.getChannelData(0);
             
-            // Ruido Blanco
             for (let i = 0; i < bufferSize; i++) {
                 data[i] = Math.random() * 2 - 1;
             }
@@ -432,7 +434,6 @@
             const noise = audioCtx.createBufferSource();
             noise.buffer = buffer;
             
-            // Filtro Lowpass para que suene grave (explosión) y no estática
             const filter = audioCtx.createBiquadFilter();
             filter.type = 'lowpass';
             filter.frequency.value = 1000;
@@ -457,7 +458,6 @@
                     url: window.location.href
                 }).catch(console.error);
             } else {
-                // Fallback: Copiar al portapapeles
                 navigator.clipboard.writeText(window.location.href);
                 alert("Link copiado al portapapeles. ¡Pásalo!");
             }
@@ -726,7 +726,6 @@
             
             // VISUAL
             const hayPenitencias = document.getElementById('opt-penitencias').checked;
-            const resultadoDisplay = document.getElementById('resultado-final');
             const mensajeModal = document.getElementById('modal-mensaje');
             const modal = document.getElementById('modal-explosion');
             
@@ -735,17 +734,12 @@
             if (hayPenitencias) {
                 const penitencia = sacarDeBolsa(bolsaPenitencias, "penitencias");
                 textoResultado = "😈 " + penitencia.toUpperCase();
-                resultadoDisplay.style.color = "#D32F2F";
             } else {
                 textoResultado = "FONDO BLANCO O PENITENCIA";
-                resultadoDisplay.style.color = "#111";
             }
 
-            resultadoDisplay.innerText = textoResultado;
             mensajeModal.innerText = textoResultado;
 
-            showScreen('screen-end');
-            
             // MOSTRAR MODAL
             modal.classList.add('active');
 
