@@ -130,9 +130,6 @@
         
         .link-discreto { background: transparent; border: none; color: #111; font-size: 0.85rem; text-decoration: underline; margin-top: 15px; padding: 10px; box-shadow: none; text-transform: none; opacity: 0.9; cursor: pointer; }
 
-        /* ESTE ES EL BOTÓN "X" QUE FUE ELIMINADO - YA NO ESTÁ EN EL HTML */
-        /* .btn-cancel { position: absolute; top: 0; right: 0; width: 50px; height: 50px; background: #D32F2F; color: white; border-radius: 50%; font-size: 1.5rem; line-height: 1; padding: 0; margin: 0; box-shadow: 2px 2px 0 rgba(0,0,0,0.3); z-index: 100; display: flex; justify-content: center; align-items: center; pointer-events: auto; } */
-
         .scroll-content { width: 100%; max-height: 60vh; overflow-y: auto; text-align: left; background: rgba(255,255,255,0.95); border: 3px solid #111; border-radius: 15px; padding: 15px; box-sizing: border-box; margin-bottom: 15px; font-family: 'Arial', sans-serif; font-size: 0.9rem; line-height: 1.4; color: #222; pointer-events: auto; }
         .scroll-content * { pointer-events: auto; } 
         .scroll-content h3 { margin-top: 15px; color: #D32F2F; font-family: 'Arial Black', sans-serif; font-size: 1rem; text-transform: uppercase; pointer-events: none; }
@@ -324,10 +321,8 @@
 
     <!-- JUEGO -->
     <div id="screen-game" class="screen">
-        <!-- SE ELIMINÓ LA X DE ACÁ -->
         <h3 id="tema-juego" style="color:#D32F2F; text-transform:uppercase;">TEMA</h3>
         <div class="card"><div id="letra-display" class="big-text">A</div></div>
-        
         <button onclick="cambiarLetra()" style="height:120px; font-size:1.8rem;">SIGUIENTE</button>
         
         <!-- BOTÓN OMITIR -->
@@ -339,13 +334,13 @@
         <button onclick="cancelarPartida()" class="link-discreto" style="margin-top:15px; color:#D32F2F; font-weight:bold;">🛑 Terminar Partida</button>
     </div>
 
-    <!-- FINAL (ESTA PANTALLA YA NO MUESTRA EL RESULTADO, LO HACE EL MODAL) -->
+    <!-- FINAL (DETRÁS DEL MODAL) -->
     <div id="screen-end" class="screen">
         <h1 style="font-size:4rem; color:#D32F2F; margin:0;">¡ESTALLÓ!</h1>
         <h2 style="margin-top:-10px;">PERDIÓ EL AÑO</h2>
         
         <div class="card">
-            <div id="resultado-final" style="font-size:1.4rem; font-weight:bold; line-height:1.2; opacity:0;"></div> <!-- Resultado final invisible acá -->
+            <div id="resultado-final" style="font-size:1.4rem; font-weight:bold; line-height:1.2;">FONDO BLANCO O PENITENCIA</div>
         </div>
         
         <button onclick="otraRonda()" style="background-color: #111; color: #FFD700; border: 3px solid #FFD700;">¡OTRA RONDA!</button>
@@ -357,8 +352,9 @@
     <div id="screen-sugerencias" class="screen">
         <h2 style="font-size:1.5rem; margin-bottom:10px;">BUZÓN DE LA OLLA</h2>
         <p style="font-family:sans-serif; font-size:0.9rem; margin-top:0; margin-bottom:20px; line-height:1.4;">¿Qué temas faltan? ¿Qué penitencia agregamos? <br> ¡Hable pues!</p>
-        <form id="form-sugerencias" action="https://formspree.io/f/mzdbjdbd" method="POST" style="width:100%;">
-            <textarea name="message" placeholder="Ej: Agreguen penitencias de bailar reggaeton..." required></textarea>
+        <form name="sugerencias" method="POST" data-netlify="true" style="width:100%;">
+            <input type="hidden" name="form-name" value="sugerencias" />
+            <textarea name="mensaje" placeholder="Ej: Agreguen penitencias de bailar reggaeton..." required></textarea>
             <button type="submit" style="background:#4CAF50; margin-top:10px;">ENVIAR</button>
         </form>
         <button onclick="showScreen('screen-home')" style="background:transparent; border:none; text-decoration:underline; box-shadow:none; margin-top:15px; color:#555;">Volver sin enviar</button>
@@ -372,8 +368,6 @@
 
         // --- MOTOR DE AUDIO ---
         let audioCtx = null;
-        // El fail.mp3 ya no existe como fallback, ahora memes/1.mp3 es el respaldo
-        // let failAudio = new Audio('fail.mp3'); // Comentado
         let backupAudio = new Audio('memes/1.mp3'); 
 
         function initAudio() {
@@ -384,11 +378,9 @@
             if (audioCtx.state === 'suspended') {
                 audioCtx.resume();
             }
-            // failAudio.load(); // Comentado
-            backupAudio.load(); // Asegurarse que el respaldo esté precargado
+            backupAudio.load(); 
         }
 
-        // Sonido de "Olla Pitando" (Tic sintético)
         function playTickSound() {
             if (!audioCtx) return;
             const osc = audioCtx.createOscillator();
@@ -404,23 +396,21 @@
             osc.stop(audioCtx.currentTime + 0.15);
         }
 
-        // Sonido de Omitir (Penalización)
         function playPenaltySound() {
             if (!audioCtx) return;
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
             osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(100, audioCtx.currentTime); // Más grave
-            osc.frequency.linearRampToValueAtTime(20, audioCtx.currentTime + 0.2); // Más breve y grave
+            osc.frequency.setValueAtTime(100, audioCtx.currentTime); 
+            osc.frequency.linearRampToValueAtTime(20, audioCtx.currentTime + 0.2); 
             gain.gain.setValueAtTime(0.8, audioCtx.currentTime);
             gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.2);
             osc.connect(gain);
             gain.connect(audioCtx.destination);
             osc.start();
-            osc.stop(audioCtx.currentTime + 0.25); // Duración total
+            osc.stop(audioCtx.currentTime + 0.25);
         }
 
-        // SONIDO DE EXPLOSIÓN SINTÉTICA
         function playSyntheticExplosion() {
             if (!audioCtx) return;
             const bufferSize = audioCtx.sampleRate * 2; 
@@ -449,7 +439,6 @@
             noise.start();
         }
 
-        // --- COMPARTIR APP ---
         function compartirApp() {
             if (navigator.share) {
                 navigator.share({
@@ -469,17 +458,17 @@
             setTimeout(() => { window.location.reload(true); }, 800);
         }
 
+        // --- MANEJO DE PANTALLAS ---
         function showScreen(id) {
             if (document.activeElement) document.activeElement.blur();
             window.getSelection().removeAllRanges();
-            document.body.style.display = 'none';
-            document.body.offsetHeight; 
-            document.body.style.display = 'flex';
+            
+            // REMOVIDO HACK DE REPAINT - Se usa CSS y lógica para limpiar
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
         }
 
-        // --- BASE DE DATOS DE PENITENCIAS ---
+        // --- BASE DE DATOS Y LÓGICA DE JUEGO (Mismos datos) ---
         const DB_PENITENCIAS = [
             "Haga el 8 con la cola en la mitad de la sala", "Imite a Epa Colombia: 'Epa la arepa'", "Haga 10 flexiones de pecho ya mismo",
             "Llame a su ex y cuelgue (o mande audio)", "Baile 'El Pirulino' (Pedro el Escamoso)", "Haga el 4 para ver si está borracho",
@@ -514,7 +503,6 @@
             bolsaPenitencias.sort(() => Math.random() - 0.5);
         }
 
-        // --- DATOS DE TEMAS ---
         const DB_TEMAS = {
             general: ["Personajes de Betty la Fea", "Personajes de Pedro el Escamoso", "Famosos Colombianos muertos", "Presentadoras de TV", "Influencers Colombianos", "Canciones de Diomedes", "Cantantes de Reggaeton", "Jugadores de la Selección", "Comida de la calle", "Dulces de tienda", "Marcas de Cerveza", "Sabores de helado", "Frutas colombianas", "Agüeros de Diciembre", "Groserías Colombianas", "Excusas para llegar tarde", "Mentiras de Hombres", "Mentiras de Mujeres", "Cosas que uno compra fiao", "Remedios de la abuela", "Frases de Mamá", "Cosas que dan Guayabo Moral", "Programas de TV viejos", "Marcas de ropa interior barata", "Cosas que uno guarda bajo el colchón", "Mitos urbanos", "Posiciones sexuales", "Lugares para echar un polvo", "Apodos para el pene/vagina", "Motivos de divorcio", "Cosas que se dicen en el sexo", "Tipos de condones", "Juguetes sexuales", "Cosas que matan la pasión", "Fantasías sexuales comunes", "Excusas para no culiar", "Cosas que uno hace borracho", "Tipos de Vecinos molestos", "Nombres de Señora del aseo", "Nombres de Celadores", "Cosas que uno se roba de un hotel", "Marcas de celulares viejos", "Oficios varios", "Instrumentos musicales", "Cosas que uno pierde en una rumba", "Villanos de Telenovelas", "Juegos de infancia", "Marcas de carros en Colombia", "Tipos de borrachos", "Canciones para planchar", "Apodos para suegras", "Cosas que uno dice en una entrevista", "Excusas para terminar una relación", "Nombres de bancos", "Marcas de arroz", "Partes del cuerpo que duelen con la edad", "Cosas que uno busca en Google", "Realities Colombianos", "Marcas de papel higiénico", "Cosas que uno pide en una droguería", "Nombres de centros comerciales", "Tipos de aretes", "Utensilios de cocina", "Cosas que hay en una billetera", "Marcas de Jabón", "Frases de Conductor de Bus", "Nombres de Perros Criollos", "Marcas de Motos", "Cosas que huelen feo", "Platos de Navidad", "Villancicos famosos", "Regalos malos de amigo secreto", "Emisoras de radio", "Marcas de ropa cara", "Marcas de zapatos escolares", "Tipos de taxistas", "Vendedores ambulantes", "Cosas que se venden en un semáforo", "Frases de cajero automático", "Cosas que uno empeña", "Piropos de albañil"],
             paisa: ["Nombres de Neas", "Barrios calientes de Medellín", "Estaciones del Metro", "Pueblos de Antioquia", "Nombres de Grilla", "Nombres de Chuzos de la 70", "Platos típicos paisas", "Ingredientes de Bandeja Paisa", "Marcas de Guaro", "Cosas de una Finca", "Nombres de Moteles en Medallo", "Centros Comerciales de Medellín", "Dichos Paisas", "Cosas que se venden en los buses", "Apodos de Narcos", "Sitios pa' puebliar", "Emisoras de Medellín", "Barrios de Bello", "Barrios de Itagüí", "Comidas rápidas de barrio", "Parques de Medellín", "Apodos para los parceros", "Palabras Neas", "Nombres de fincas", "Estaciones del Metroplús", "Rutas de buses de Medallo", "Centros Comerciales del Hueco", "Barrios de Envigado", "Sitios de rumba en el Lleras", "Marcas de ropa del Hueco", "Nombres de colegios públicos", "Platos con arepa", "Tipos de arepa paisa", "Miradores de Medellín", "Cosas que pasan en el Metro", "Personajes del centro de Medellín", "Pueblos del Suroeste", "Pueblos del Oriente", "Sitios para comer sancocho", "Veredas de Santa Elena", "Barrios de Robledo", "Barrios de Belén", "Cosas de la Feria de las Flores", "Silleteros famosos", "Trovas famosas", "Palabras de abuelos paisas", "Sitios para ir a 'moteliar'", "Comida de carretera", "Dulces de pueblo", "Marcas de aguardiente tapa azul/roja", "Sitios de rumba en La 33", "Cosas que uno hace en Guatapé", "Nombres de 'plazas' de vicio famosas (Barrios)", "Puentes de Medellín", "Cerros tutelares", "Bibliotecas públicas", "Universidades de Medellín"],
@@ -575,20 +563,11 @@
         }
 
         function sacarDeBolsa(bolsa, funcionLlenado) {
-            // FIX: Validar si la bolsa esta vacía ANTES de sacar
             if (bolsa.length === 0) {
                 if(funcionLlenado === "temas") { bolsaTemas = armarBolsaTemas(); return bolsaTemas.pop(); }
                 else if(funcionLlenado === "penitencias") { llenarBolsaPenitencias(); return bolsaPenitencias.pop(); }
-                else { funcionLlenado(); } // Llenar letras
+                else { funcionLlenado(); } 
             }
-            
-            // Re-chequeo de seguridad: si aun esta vacía (caso raro), forzar llenado
-            if (bolsa.length === 0) {
-                 if(funcionLlenado === "temas") bolsaTemas = armarBolsaTemas();
-                 else if(funcionLlenado === "penitencias") llenarBolsaPenitencias();
-                 else funcionLlenado();
-            }
-
             const indiceRandom = Math.floor(Math.random() * bolsa.length);
             const item = bolsa[indiceRandom];
             bolsa.splice(indiceRandom, 1);
@@ -599,10 +578,10 @@
             llenarBolsaLetras();
             llenarBolsaPenitencias();
             showScreen('screen-home');
+            document.getElementById('pass-input').disabled = true;
         };
 
         function verificarClave() {
-            // Clave desactivada por ahora
             showScreen('screen-home');
         }
 
@@ -688,7 +667,7 @@
 
         function cambiarLetra() {
             const letraFinal = sacarDeBolsa(bolsaLetras, llenarBolsaLetras);
-            document.getElementById('letra-display').innerText = letraFinal;
+            document.getElementById('letra-display').innerText = letraFinal ? letraFinal : "A";
         }
 
         function omitirLetra() {
@@ -703,10 +682,8 @@
             juegoActivo = false;
             clearTimeout(timerID);
             
-            // 1. SONIDO DE EXPLOSIÓN SINTÉTICA
             playSyntheticExplosion();
 
-            // 2. SONIDO DE MEME (Secundario)
             let randomMeme = Math.floor(Math.random() * CANTIDAD_MEMES) + 1;
             let memeAudio = new Audio(`memes/${randomMeme}.mp3`);
             let backupAudio = new Audio('memes/1.mp3');
@@ -716,7 +693,6 @@
                 backupAudio.play().catch(e => console.log("Backup audio error:", e));
             };
             
-            // Retardo leve
             setTimeout(() => {
                 memeAudio.play().catch(e => {
                     backupAudio.currentTime = 0;
@@ -724,8 +700,8 @@
                 });
             }, 800);
             
-            // VISUAL
             const hayPenitencias = document.getElementById('opt-penitencias').checked;
+            const resultadoDisplay = document.getElementById('resultado-final');
             const mensajeModal = document.getElementById('modal-mensaje');
             const modal = document.getElementById('modal-explosion');
             
@@ -734,13 +710,16 @@
             if (hayPenitencias) {
                 const penitencia = sacarDeBolsa(bolsaPenitencias, "penitencias");
                 textoResultado = "😈 " + penitencia.toUpperCase();
+                resultadoDisplay.style.color = "#D32F2F";
             } else {
                 textoResultado = "FONDO BLANCO O PENITENCIA";
+                resultadoDisplay.style.color = "#111";
             }
 
+            resultadoDisplay.innerText = textoResultado;
             mensajeModal.innerText = textoResultado;
 
-            // MOSTRAR MODAL
+            showScreen('screen-end'); // AHORA ESTÁ ANTES DEL MODAL PARA QUE QUEDE DE FONDO
             modal.classList.add('active');
 
             if(navigator.vibrate) navigator.vibrate([1000, 200, 1000]);
@@ -748,6 +727,7 @@
 
         function cerrarModal() {
             document.getElementById('modal-explosion').classList.remove('active');
+            showScreen('screen-end'); // Aseguramos que la pantalla de fondo sea la final
         }
 
         function aceptarReto() {
@@ -760,7 +740,6 @@
             cerrarModal();
         }
 
-        // --- MANEJO DEL FORMULARIO DE SUGERENCIAS (AJAX) ---
         const formSugerencias = document.getElementById("form-sugerencias");
         formSugerencias.addEventListener("submit", async (e) => {
             e.preventDefault();
