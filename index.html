@@ -12,35 +12,26 @@
     <meta name="theme-color" content="#FFD700">
 
     <style>
-        /* --- 1. RESET Y BLOQUEO DE CURSOR --- */
+        /* --- BLOQUEO TOTAL NIVEL DIOS --- */
         * {
-            box-sizing: border-box; /* CRUCIAL PARA QUE LOS BOTONES NO SE MONTEN */
             -webkit-tap-highlight-color: transparent;
             -webkit-touch-callout: none;
             -webkit-user-select: none;
             user-select: none;
             outline: none !important;
-            caret-color: transparent !important; /* Cursor invisible global */
-        }
-
-        /* --- 2. EXCEPCIÓN: SOLO EL TEXTAREA PUEDE TENER CURSOR --- */
-        textarea {
-            caret-color: #000 !important;
-            -webkit-user-select: text !important;
-            user-select: text !important;
-            cursor: text !important;
-            pointer-events: auto !important;
+            caret-color: transparent !important; /* Muerte al cursor */
         }
 
         html, body {
             height: 100%;
             overflow: hidden;
+            cursor: default;
             background-color: #FFD700; 
-            font-family: 'Arial Black', sans-serif; 
-            margin: 0; 
         }
 
         body { 
+            font-family: 'Arial Black', sans-serif; 
+            margin: 0; 
             display: flex; 
             justify-content: center; 
             align-items: center; 
@@ -48,28 +39,19 @@
             flex-direction: column; 
         }
 
-        /* --- 3. ELEMENTOS INTOCABLES (TEXTO) --- */
-        h1, h2, h3, p, span, .big-text, #tema-display {
+        /* ELEMENTOS CLICKEABLES */
+        button, a, .region-option label {
+            pointer-events: auto;
+            cursor: pointer;
+        }
+
+        /* TEXTOS INTOCABLES */
+        h1, h2, h3, p, div, span, .big-text {
             cursor: default;
             pointer-events: none; 
         }
-        
-        /* --- 4. ELEMENTOS TOCABLES --- */
-        button, a, label, .link-discreto, .card, .screen, .modal-content {
-            pointer-events: auto !important;
-        }
 
-        /* PANTALLAS */
-        .screen { 
-            display: none; 
-            width: 90%; 
-            max-width: 400px; 
-            height: 100%; 
-            flex-direction: column; 
-            justify-content: center; 
-            align-items: center; 
-            position: relative; 
-        }
+        .screen { display: none; width: 90%; max-width: 400px; height: 100%; flex-direction: column; justify-content: center; align-items: center; box-sizing: border-box; position: relative; }
         .active { display: flex; }
         
         .card { 
@@ -80,80 +62,64 @@
             border: 4px solid #111; 
             width: 100%; 
             margin-bottom: 20px; 
+            box-sizing: border-box;
+            pointer-events: none;
         }
         
-        button { 
-            background-color: #111; 
-            color: white; 
-            border: none; 
-            padding: 18px; 
-            font-size: 1.1rem; 
-            font-weight: bold; 
-            border-radius: 12px; 
-            cursor: pointer; 
-            width: 100%; 
-            text-transform: uppercase; 
-            box-shadow: 4px 4px 0 rgba(0,0,0,0.2); 
-            transition: transform 0.1s; 
-            margin-bottom: 10px;
-            position: relative;
-            z-index: 10;
-        }
+        button { background-color: #111; color: white; border: none; padding: 18px; font-size: 1.1rem; font-weight: bold; border-radius: 12px; width: 100%; text-transform: uppercase; box-shadow: 4px 4px 0 rgba(0,0,0,0.2); transition: transform 0.1s; touch-action: manipulation; margin-bottom: 10px;}
         button:active { transform: scale(0.96); }
         
         .btn-secondary { background: white; color: #111; border: 3px solid #111; }
-        .btn-omitir { background-color: #D32F2F; color: white; border: 3px solid #111; padding: 15px; display: flex; flex-direction: column; align-items: center; line-height: 1.2; }
         .btn-peque { background-color: #D32F2F; border: 3px solid #111; } 
         .btn-medio { background-color: #FF9800; border: 3px solid #111; } 
         .btn-grande { background-color: #4CAF50; border: 3px solid #111; } 
 
-        textarea { 
-            padding: 15px; font-size: 1.2rem; border-radius: 10px; border: 3px solid #111; width: 100%; text-align: left; margin-bottom: 15px; font-family: 'Arial', sans-serif; 
-            box-shadow: none; outline: none; height: 120px; resize: none; 
+        .btn-omitir {
+            background-color: #D32F2F; color: white; border: 3px solid #111; padding: 15px; margin-top: 10px; display: flex; flex-direction: column; align-items: center; line-height: 1.2;
         }
+        
+        .link-discreto { 
+            background: transparent; border: none; color: #111; font-size: 0.85rem; text-decoration: underline; margin-top: 15px; padding: 10px; box-shadow: none; text-transform: none; opacity: 0.9; display: block;
+        }
+        
+        /* Enlaces que parecen botones o texto */
+        a { text-decoration: none; color: inherit; }
 
-        /* --- CORRECCIÓN DE LA GRILLA DE REGIONES --- */
-        .region-grid { 
-            display: grid; 
-            grid-template-columns: 1fr 1fr; /* 2 Columnas exactas */
-            gap: 10px; 
-            width: 100%; 
-            margin-bottom: 20px; 
-        }
-        
-        .region-option { width: 100%; }
+        .region-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; width: 100%; margin-bottom: 20px; }
+        .region-option { position: relative; }
         .region-option input { display: none; }
-        
         .region-option label { 
-            display: flex; /* Centrar contenido */
-            justify-content: center;
-            align-items: center;
-            background: #fff; 
-            border: 3px solid #111; 
-            padding: 12px 5px; 
-            border-radius: 10px; 
-            cursor: pointer; 
-            font-size: 0.9rem; 
-            color: #555; 
-            transition: 0.2s; 
-            box-shadow: 2px 2px 0 rgba(0,0,0,0.1); 
-            width: 100%;
-            height: 100%;
+            display: block; background: #fff; border: 3px solid #111; padding: 10px; border-radius: 10px; font-size: 0.9rem; color: #555; transition: 0.2s; box-shadow: 2px 2px 0 rgba(0,0,0,0.1); 
         }
-        
         .region-option input:checked + label { background: #111; color: #FFD700; border-color: #111; transform: scale(1.02); box-shadow: 4px 4px 0 rgba(0,0,0,0.2); }
-        .region-option input:disabled + label { background: #e0e0e0; color: #555; border-color: #999; cursor: default; }
+        .region-option input:disabled + label { background: #e0e0e0; color: #555; border-color: #999; cursor: default; pointer-events: none; }
+
         .penitencia-check input:checked + label { background: #D32F2F; color: white; border-color: #111; }
 
-        .link-discreto { background: transparent; border: none; color: #111; font-size: 0.85rem; text-decoration: underline; margin-top: 15px; padding: 10px; box-shadow: none; text-transform: none; opacity: 0.9; cursor: pointer; display: inline-block; }
+        h1 { line-height: 1; margin-bottom: 5px; }
+        h2 { font-size: 1.4rem; color: #111; margin-bottom: 15px; }
+        .big-text { font-size: 6rem; margin: 10px 0; color: #111; line-height: 1; }
+        #tema-display { font-size: 1.4rem; line-height: 1.2; word-wrap: break-word; }
+        
+        .btn-cancel { position: absolute; top: 0; right: 0; width: 50px; height: 50px; background: #D32F2F; color: white; border-radius: 50%; font-size: 1.5rem; line-height: 1; padding: 0; margin: 0; box-shadow: 2px 2px 0 rgba(0,0,0,0.3); z-index: 100; display: flex; justify-content: center; align-items: center; pointer-events: auto; }
 
+        /* LOADING */
+        #screen-loading { background-color: #000; color: #0f0; font-family: 'Courier New', monospace; text-align: left; padding: 20px; }
+        .log-line { margin-bottom: 5px; font-size: 0.8rem; white-space: nowrap; border-right: 2px solid #0f0; }
+        .loader-bar { width: 100%; height: 12px; background: #222; border: 1px solid #0f0; margin-top: 20px; }
+        .loader-progress { width: 0%; height: 100%; background: #0f0; transition: width 0.4s; }
+
+        /* SCROLL (Instrucciones) */
         .scroll-content { width: 100%; max-height: 60vh; overflow-y: auto; text-align: left; background: rgba(255,255,255,0.95); border: 3px solid #111; border-radius: 15px; padding: 15px; box-sizing: border-box; margin-bottom: 15px; font-family: 'Arial', sans-serif; font-size: 0.9rem; line-height: 1.4; color: #222; pointer-events: auto; }
+        .scroll-content h3 { margin-top: 15px; color: #D32F2F; font-family: 'Arial Black', sans-serif; font-size: 1rem; text-transform: uppercase; }
+        .scroll-content h3:first-child { margin-top: 0; }
+
         .logo-main { width: 150px; height: 150px; object-fit: contain; margin-bottom: 10px; filter: drop-shadow(5px 5px 0px rgba(0,0,0,0.2)); pointer-events: none; }
 
         /* MODAL */
-        #modal-explosion { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 9999; flex-direction: column; justify-content: center; align-items: center; animation: shake 0.5s; }
-        #modal-explosion.active { display: flex !important; }
-        .modal-content { background: #FFD700; border: 5px solid #111; padding: 30px; border-radius: 20px; width: 90%; max-width: 350px; text-align: center; box-shadow: 0 0 50px rgba(255, 0, 0, 0.8); }
+        #modal-explosion { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 9999; flex-direction: column; justify-content: center; align-items: center; animation: shake 0.5s; }
+        #modal-explosion.active { display: flex; }
+        .modal-content { background: #FFD700; border: 5px solid #111; padding: 30px; border-radius: 20px; width: 90%; max-width: 350px; text-align: center; box-shadow: 0 0 50px rgba(255, 0, 0, 0.5); pointer-events: auto; }
 
         @keyframes shake { 0% { transform: translate(1px, 1px) rotate(0deg); } 10% { transform: translate(-1px, -2px) rotate(-1deg); } 20% { transform: translate(-3px, 0px) rotate(1deg); } 30% { transform: translate(3px, 2px) rotate(0deg); } 40% { transform: translate(1px, -1px) rotate(1deg); } 50% { transform: translate(-1px, 2px) rotate(-1deg); } 60% { transform: translate(-3px, 1px) rotate(0deg); } 70% { transform: translate(3px, 1px) rotate(-1deg); } 80% { transform: translate(-1px, -1px) rotate(1deg); } 90% { transform: translate(1px, 2px) rotate(0deg); } 100% { transform: translate(1px, -2px) rotate(-1deg); } }
     </style>
@@ -173,6 +139,13 @@
         </div>
     </div>
 
+    <!-- LOADING (FALSO, SOLO ESTÉTICO) -->
+    <div id="screen-loading" class="screen">
+        <div id="log-container"></div>
+        <div class="loader-bar"><div id="loader-fill" class="loader-progress"></div></div>
+        <p style="text-align:center; color:#0f0; margin-top:15px; font-size:0.75rem;">CALENTANDO LA OLLA...</p>
+    </div>
+
     <!-- HOME -->
     <div id="screen-home" class="screen active">
         <img src="logo.png" class="logo-main" alt="La Olla Pitadora">
@@ -183,8 +156,10 @@
             <button onclick="showScreen('screen-install')" class="btn-secondary" style="font-size: 0.8rem; padding: 10px;">📲 INSTALAR APP</button>
             <button onclick="showScreen('screen-instructions')" class="btn-secondary" style="font-size: 0.8rem; padding: 10px;">❓ CÓMO JUGAR</button>
         </div>
-        <button onclick="compartirApp()" class="btn-secondary" style="margin-top:0; font-size: 0.9rem; padding: 12px; background:#FFD700; border: 2px dashed #111;">📢 COMPARTIR JUEGO</button>
-        <button onclick="showScreen('screen-sugerencias')" class="link-discreto" style="opacity:0.7; font-size:0.8rem;">💡 Sugerencias y Mejoras</button>
+        
+        <!-- ENLACE EXTERNO A SUGERENCIAS -->
+        <a href="sugerencias.html" class="link-discreto" style="opacity:0.7; font-size:0.8rem;">💡 Sugerencias y Mejoras</a>
+        
         <button onclick="actualizarApp()" id="btn-update" class="link-discreto" style="opacity:0.5; font-size:0.7rem; margin-top:20px;">🔄 Buscar Actualizaciones</button>
     </div>
 
@@ -235,7 +210,6 @@
     <div id="screen-setup" class="screen">
         <h2>¿QUIÉNES ESTAMOS?</h2>
         <p style="font-size: 0.8rem; margin-top: -10px; margin-bottom: 10px;">Selecciona regiones y opciones:</p>
-        
         <div class="region-grid">
             <div class="region-option"><input type="checkbox" id="reg-general" value="general" checked><label for="reg-general">🇨🇴 General</label></div>
             <div class="region-option"><input type="checkbox" id="reg-paisa" value="paisa"><label for="reg-paisa">🏔️ Paisas</label></div>
@@ -244,14 +218,12 @@
             <div class="region-option"><input type="checkbox" id="reg-valluno" value="valluno"><label for="reg-valluno">💃 Vallunos</label></div>
             <div class="region-option"><input type="checkbox" id="reg-santander" value="santander"><label for="reg-santander">🐜 Santander</label></div>
         </div>
-
         <div style="width: 100%; margin-bottom: 20px;">
             <div class="region-option penitencia-check">
                 <input type="checkbox" id="opt-penitencias" value="penitencias" checked>
-                <label for="opt-penitencias">😈 ¡PENITENCIAS!</label>
+                <label for="opt-penitencias">😈 ¡ACTIVAR PENITENCIAS!</label>
             </div>
         </div>
-
         <h2>¿QUÉ TAN RÁPIDO?</h2>
         <div style="display:flex; flex-direction:column; gap:10px; width:100%;">
             <button class="btn-peque" onclick="this.blur(); configurarYJugar('peque')">EN PURA HP! 🔥 (Rápido)</button>
@@ -274,10 +246,17 @@
 
     <!-- JUEGO -->
     <div id="screen-game" class="screen">
+        <button class="btn-cancel" onclick="cancelarPartida()">✖</button>
         <h3 id="tema-juego" style="color:#D32F2F; text-transform:uppercase;">TEMA</h3>
         <div class="card"><div id="letra-display" class="big-text">A</div></div>
         <button onclick="cambiarLetra()" style="height:120px; font-size:1.8rem;">SIGUIENTE</button>
-        <button onclick="omitirLetra()" class="btn-omitir">OMITIR 😱<span style="display:block; font-size:0.6rem; font-weight:normal; margin-top:3px;">¡PIERDES TIEMPO!</span></button>
+        
+        <!-- BOTÓN OMITIR -->
+        <button onclick="omitirLetra()" class="btn-omitir">
+            OMITIR 😱
+            <span style="display:block; font-size:0.6rem; font-weight:normal; margin-top:3px;">¡PIERDES TIEMPO!</span>
+        </button>
+
         <button onclick="cancelarPartida()" class="link-discreto" style="margin-top:15px; color:#D32F2F; font-weight:bold;">🛑 Terminar Partida</button>
     </div>
 
@@ -290,24 +269,14 @@
         </div>
         <button onclick="otraRonda()" style="background-color: #111; color: #FFD700; border: 3px solid #FFD700;">¡OTRA RONDA!</button>
         <button onclick="showScreen('screen-setup')" class="btn-secondary">CAMBIAR PARCHE</button>
-        <button onclick="showScreen('screen-sugerencias')" class="link-discreto">Reportar un error o sugerir tema</button>
-    </div>
-
-    <!-- SUGERENCIAS -->
-    <div id="screen-sugerencias" class="screen">
-        <h2 style="font-size:1.5rem; margin-bottom:10px;">BUZÓN DE LA OLLA</h2>
-        <p style="font-family:sans-serif; font-size:0.9rem; margin-top:0; margin-bottom:20px; line-height:1.4;">¿Qué temas faltan? ¿Qué penitencia agregamos? <br> ¡Hable pues!</p>
-        <form id="form-sugerencias" action="https://formspree.io/f/mzdbjdbd" method="POST" style="width:100%;">
-            <input type="hidden" name="form-name" value="sugerencias" />
-            <textarea name="mensaje" placeholder="Ej: Agreguen penitencias de bailar reggaeton..." required></textarea>
-            <button type="submit" style="background:#4CAF50; margin-top:10px;">ENVIAR</button>
-        </form>
-        <button onclick="showScreen('screen-home')" style="background:transparent; border:none; text-decoration:underline; box-shadow:none; margin-top:15px; color:#555;">Volver sin enviar</button>
+        <!-- Enlace al archivo externo -->
+        <a href="sugerencias.html" class="link-discreto">Reportar un error o sugerir tema</a>
     </div>
 
     <script>
+        const SEMILLA = "PARRANDA_SEC_2025";
         const CANTIDAD_MEMES = 20; 
-        
+
         // --- MOTOR DE AUDIO ---
         let audioCtx = null;
         let backupAudio = new Audio('memes/1.mp3'); 
@@ -317,25 +286,40 @@
                 const AudioContext = window.AudioContext || window.webkitAudioContext;
                 audioCtx = new AudioContext();
             }
-            if (audioCtx.state === 'suspended') { audioCtx.resume(); }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
             backupAudio.load(); 
         }
 
-        // --- SONIDOS MATEMÁTICOS ---
         function playTickSound() {
             if (!audioCtx) return;
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
-            osc.type = 'triangle'; osc.frequency.setValueAtTime(800, audioCtx.currentTime); osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.1); gain.gain.setValueAtTime(1, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
-            osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.15);
+            osc.type = 'triangle'; 
+            osc.frequency.setValueAtTime(800, audioCtx.currentTime); 
+            osc.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 0.1); 
+            gain.gain.setValueAtTime(1, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.15);
         }
 
         function playPenaltySound() {
             if (!audioCtx) return;
             const osc = audioCtx.createOscillator();
             const gain = audioCtx.createGain();
-            osc.type = 'sawtooth'; osc.frequency.setValueAtTime(150, audioCtx.currentTime); osc.frequency.linearRampToValueAtTime(50, audioCtx.currentTime + 0.4); gain.gain.setValueAtTime(0.8, audioCtx.currentTime); gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
-            osc.connect(gain); gain.connect(audioCtx.destination); osc.start(); osc.stop(audioCtx.currentTime + 0.4);
+            osc.type = 'sawtooth';
+            osc.frequency.setValueAtTime(150, audioCtx.currentTime); 
+            osc.frequency.linearRampToValueAtTime(50, audioCtx.currentTime + 0.4); 
+            gain.gain.setValueAtTime(0.8, audioCtx.currentTime);
+            gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+            osc.start();
+            osc.stop(audioCtx.currentTime + 0.4);
         }
 
         function playSyntheticExplosion() {
@@ -347,16 +331,25 @@
             const noise = audioCtx.createBufferSource();
             noise.buffer = buffer;
             const filter = audioCtx.createBiquadFilter();
-            filter.type = 'lowpass'; filter.frequency.value = 1000; filter.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 1);
+            filter.type = 'lowpass';
+            filter.frequency.value = 1000;
+            filter.frequency.exponentialRampToValueAtTime(100, audioCtx.currentTime + 1);
             const gain = audioCtx.createGain();
-            gain.gain.setValueAtTime(1, audioCtx.currentTime); gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 1.5);
-            noise.connect(filter); filter.connect(gain); gain.connect(audioCtx.destination); noise.start();
+            gain.gain.setValueAtTime(1, audioCtx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 1.5);
+            noise.connect(filter);
+            filter.connect(gain);
+            gain.connect(audioCtx.destination);
+            noise.start();
         }
 
         function compartirApp() {
             if (navigator.share) {
-                navigator.share({ title: 'La Olla Pitadora', text: '¡Ojo que esa vaina estalla!', url: window.location.href }).catch(console.error);
-            } else { navigator.clipboard.writeText(window.location.href); alert("Link copiado. ¡Pásalo!"); }
+                navigator.share({ title: 'La Olla Pitadora', text: '¡Ojo que esa vaina estalla! Juguemos un parche bien bueno.', url: window.location.href }).catch(console.error);
+            } else {
+                navigator.clipboard.writeText(window.location.href);
+                alert("Link copiado. ¡Pásalo!");
+            }
         }
 
         function actualizarApp() {
@@ -366,14 +359,48 @@
         }
 
         function showScreen(id) {
-            if (document.activeElement) document.activeElement.blur();
             window.getSelection().removeAllRanges();
+            document.body.style.display = 'none';
+            document.body.offsetHeight; 
+            document.body.style.display = 'flex';
             document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
             document.getElementById(id).classList.add('active');
         }
 
-        // --- BASES DE DATOS (Mismos datos) ---
-        const DB_PENITENCIAS = [ "Haga el 8 con la cola", "Imite a Epa Colombia", "10 flexiones de pecho", "Llame a su ex", "Baile El Pirulino", "Haga el 4", "Cante Mis Ojos Lloran por Ti", "Imite a Doña Gloria", "Haga como perro tomando agua", "Muestre ultima foto galeria", "Shot sin manos", "Hable como ñero", "Imite video me la mecatie", "Paso de Anitta", "Cante Yasuri Yamile", "Venda aguacates", "Zapatos al reves", "Sentadillas", "Cante La Quemona", "Imite vendedor bus", "Gallina poniendo huevo", "Foto mueca historia", "Declarese al de al frente", "Mimica condon roto", "Sonido cerdo", "Trago cruzado", "Baile Serrucho", "Imite Diomedes", "Chiste malo o bebe", "Pararse de manos", "Grite vecina arroz", "Beba todo", "Imite Fuicioso", "Montaña rusa", "Pasarela", "Imite Shakira", "Comercial TV", "Acento mexicano", "Trago bebida fea", "Masajes 1 min", "Bebe llorando", "Moto prendiendo", "Asereje", "Himno nacional", "Ataque fingido", "Politico corrupto", "Influencer fajas", "Orgasmo fingido", "Risa Betty la Fea", "Gato en celo", "Chupezar dedo gordo", "Lamer piso", "Fondo blanco rodillas", "Borracho canson", "Dario Gomez", "Twerking pared", "La Liendra", "Abecedario al reves", "La Trevi", "Gritar Viva el Paro", "Ñero pidiendo plata", "Pelicula terror", "Champeta solo", "Paso robot", "Rata de dos patas", "Mico", "Comentarista gol", "Caras feas selfie", "Pintar cara marcador", "Quitar prenda", "5 sapitos", "Beso mejilla izquierda", "Bus lleno"];
+        // --- BASE DE DATOS Y LÓGICA ---
+        // (La misma lógica y datos de las versiones anteriores se mantienen aquí.
+        //  Por brevedad, asegúrate de que DB_TEMAS, DB_PENITENCIAS,
+        //  generarMazoLetras, y las funciones de juego estén presentes
+        //  tal cual la V9.2/V10.0 pero sin referencias a formularios)
+        
+        // ... (PEGAR AQUÍ LOS ARRAYS DB_TEMAS Y DB_PENITENCIAS DE LA RESPUESTA ANTERIOR) ...
+        const DB_PENITENCIAS = [
+            "Haga el 8 con la cola en la mitad de la sala", "Imite a Epa Colombia: 'Epa la arepa'", "Haga 10 flexiones de pecho ya mismo",
+            "Llame a su ex y cuelgue (o mande audio)", "Baile 'El Pirulino' (Pedro el Escamoso)", "Haga el 4 para ver si está borracho",
+            "Cante el coro de 'Mis Ojos Lloran por Ti' rápido", "Imite a Doña Gloria en el Metrocable", "Haga como perro tomando agua",
+            "Déjele ver su última foto de galería al de la derecha", "Tómese un shot sin manos", "Hable como ñero por 2 rondas",
+            "Imite el video de 'Me la mecatié en cositas'", "Haga el paso de Anitta (o inténtelo)", "Cante 'Yasuri Yamile' completa",
+            "Haga como si estuviera vendiendo aguacates", "Póngase los zapatos al revés", "Haga sentadillas hasta que le vuelva a tocar",
+            "Cante 'La Quemona' con sentimiento", "Imite a un vendedor de bus", "Haga como gallina poniendo un huevo",
+            "Tómese una foto haciendo mueca y súbala a historias", "Decláresele a la persona del frente", "Haga mímica de 'Se me rompió el condón'",
+            "Haga el sonido de un cerdo comiendo", "Beba un trago cruzando el brazo con el de al lado", "Haga el paso del 'Serrucho'",
+            "Imite a Diomedes Díaz", "Cuente un chiste malo, si nadie se ríe, bebe doble", "Haga pararse de manos (con ayuda)",
+            "Grite por la ventana '¡VECINA, SE LE QUEMA EL ARROZ!'", "Beba todo lo que tenga en el vaso", "Imite al 'Fuicioso'",
+            "Haga como si estuviera en una montaña rusa", "Camine como modelo pasarela", "Imite a Shakira cantando",
+            "Haga de cuenta que está en un comercial de TV", "Hable con acento mexicano toda la ronda", "Beba un trago de la bebida que menos le guste",
+            "Haga masajes al de la derecha por 1 min", "Haga como un bebé llorando", "Imite el sonido de una moto prendiendo",
+            "Haga el baile del 'Aserejé'", "Cante el Himno Nacional con la mano en el pecho", "Haga como si le estuviera dando un ataque",
+            "Imite a un político corrupto", "Haga de cuenta que es un influencer vendiendo fajas", "Haga el sonido de un orgasmo fingido",
+            "Imite a Betty la Fea riéndose", "Haga como un gato en celo", "Chupezarle el dedo gordo del pie al de la izquierda",
+            "Lamer el piso (o amagar)", "Hacer fondo blanco de rodillas", "Imitar a un borracho cansón", "Cantar una de Darío Gómez",
+            "Hacer twerking en la pared", "Imitar a la Liendra", "Decir el abecedario al revés (si falla, bebe)", 
+            "Hacer la pose de 'La Trevi' en el piso", "Gritar '¡Qué viva el Paro!'", "Imitar a un ñero pidiendo plata",
+            "Hacer como si estuviera en una película de terror", "Bailar una champeta solo", "Hacer el paso del robot",
+            "Cantar 'Rata de dos patas' señalando a alguien", "Hacer como un mico", "Imitar a un comentarista de fútbol gritando gol",
+            "Hacer caras feas para una selfie grupal", "Dejarse pintar la cara con un marcador", "Quitarse una prenda (que no sea ropa interior)",
+            "Hacer 5 sapitos", "Darle un beso en la mejilla al de la izquierda", "Hacer como si estuviera en un bus lleno"
+        ];
+        
         const DB_TEMAS = {
             general: ["Personajes de Betty la Fea", "Personajes de Pedro el Escamoso", "Famosos Colombianos muertos", "Presentadoras de TV", "Influencers Colombianos", "Canciones de Diomedes", "Cantantes de Reggaeton", "Jugadores de la Selección", "Comida de la calle", "Dulces de tienda", "Marcas de Cerveza", "Sabores de helado", "Frutas colombianas", "Agüeros de Diciembre", "Groserías Colombianas", "Excusas para llegar tarde", "Mentiras de Hombres", "Mentiras de Mujeres", "Cosas que uno compra fiao", "Remedios de la abuela", "Frases de Mamá", "Cosas que dan Guayabo Moral", "Programas de TV viejos", "Marcas de ropa interior barata", "Cosas que uno guarda bajo el colchón", "Mitos urbanos", "Posiciones sexuales", "Lugares para echar un polvo", "Apodos para el pene/vagina", "Motivos de divorcio", "Cosas que se dicen en el sexo", "Tipos de condones", "Juguetes sexuales", "Cosas que matan la pasión", "Fantasías sexuales comunes", "Excusas para no culiar", "Cosas que uno hace borracho", "Tipos de Vecinos molestos", "Nombres de Señora del aseo", "Nombres de Celadores", "Cosas que uno se roba de un hotel", "Marcas de celulares viejos", "Oficios varios", "Instrumentos musicales", "Cosas que uno pierde en una rumba", "Villanos de Telenovelas", "Juegos de infancia", "Marcas de carros en Colombia", "Tipos de borrachos", "Canciones para planchar", "Apodos para suegras", "Cosas que uno dice en una entrevista", "Excusas para terminar una relación", "Nombres de bancos", "Marcas de arroz", "Partes del cuerpo que duelen con la edad", "Cosas que uno busca en Google", "Realities Colombianos", "Marcas de papel higiénico", "Cosas que uno pide en una droguería", "Nombres de centros comerciales", "Tipos de aretes", "Utensilios de cocina", "Cosas que hay en una billetera", "Marcas de Jabón", "Frases de Conductor de Bus", "Nombres de Perros Criollos", "Marcas de Motos", "Cosas que huelen feo", "Platos de Navidad", "Villancicos famosos", "Regalos malos de amigo secreto", "Emisoras de radio", "Marcas de ropa cara", "Marcas de zapatos escolares", "Tipos de taxistas", "Vendedores ambulantes", "Cosas que se venden en un semáforo", "Frases de cajero automático", "Cosas que uno empeña", "Piropos de albañil"],
             paisa: ["Nombres de Neas", "Barrios calientes de Medellín", "Estaciones del Metro", "Pueblos de Antioquia", "Nombres de Grilla", "Nombres de Chuzos de la 70", "Platos típicos paisas", "Ingredientes de Bandeja Paisa", "Marcas de Guaro", "Cosas de una Finca", "Nombres de Moteles en Medallo", "Centros Comerciales de Medellín", "Dichos Paisas", "Cosas que se venden en los buses", "Apodos de Narcos", "Sitios pa' puebliar", "Emisoras de Medellín", "Barrios de Bello", "Barrios de Itagüí", "Comidas rápidas de barrio", "Parques de Medellín", "Apodos para los parceros", "Palabras Neas", "Nombres de fincas", "Estaciones del Metroplús", "Rutas de buses de Medallo", "Centros Comerciales del Hueco", "Barrios de Envigado", "Sitios de rumba en el Lleras", "Marcas de ropa del Hueco", "Nombres de colegios públicos", "Platos con arepa", "Tipos de arepa paisa", "Miradores de Medellín", "Cosas que pasan en el Metro", "Personajes del centro de Medellín", "Pueblos del Suroeste", "Pueblos del Oriente", "Sitios para comer sancocho", "Veredas de Santa Elena", "Barrios de Robledo", "Barrios de Belén", "Cosas de la Feria de las Flores", "Silleteros famosos", "Trovas famosas", "Palabras de abuelos paisas", "Sitios para ir a 'moteliar'", "Comida de carretera", "Dulces de pueblo", "Marcas de aguardiente tapa azul/roja", "Sitios de rumba en La 33", "Cosas que uno hace en Guatapé", "Nombres de 'plazas' de vicio famosas (Barrios)", "Puentes de Medellín", "Cerros tutelares", "Bibliotecas públicas", "Universidades de Medellín"],
@@ -418,7 +445,7 @@
             if(document.getElementById('reg-costeno').checked) nuevaBolsa.push(...DB_TEMAS.costeno);
             if(document.getElementById('reg-valluno').checked) nuevaBolsa.push(...DB_TEMAS.valluno);
             if(document.getElementById('reg-santander').checked) nuevaBolsa.push(...DB_TEMAS.santander);
-            
+
             if(nuevaBolsa.length === 0) {
                 alert("¡Oiga! Seleccione al menos una región pues.");
                 document.getElementById('reg-general').checked = true;
@@ -435,17 +462,10 @@
 
         function sacarDeBolsa(bolsa, funcionLlenado) {
             if (bolsa.length === 0) {
-                 if(funcionLlenado === "temas") bolsaTemas = armarBolsaTemas();
-                 else if(funcionLlenado === "penitencias") llenarBolsaPenitencias();
-                 else funcionLlenado();
+                if(funcionLlenado === "temas") { bolsaTemas = armarBolsaTemas(); return bolsaTemas.pop(); }
+                else if(funcionLlenado === "penitencias") { llenarBolsaPenitencias(); return bolsaPenitencias.pop(); }
+                else { funcionLlenado(); } 
             }
-            
-            if (bolsa.length === 0) {
-                 if(funcionLlenado === "temas") bolsaTemas = armarBolsaTemas();
-                 else if(funcionLlenado === "penitencias") llenarBolsaPenitencias();
-                 else funcionLlenado();
-            }
-
             const indiceRandom = Math.floor(Math.random() * bolsa.length);
             const item = bolsa[indiceRandom];
             bolsa.splice(indiceRandom, 1);
@@ -457,8 +477,6 @@
             llenarBolsaPenitencias();
             showScreen('screen-home');
         };
-
-        function verificarClave() { showScreen('screen-home'); }
 
         function configurarYJugar(tipo) {
             initAudio();
@@ -542,7 +560,7 @@
 
         function cambiarLetra() {
             const letraFinal = sacarDeBolsa(bolsaLetras, llenarBolsaLetras);
-            document.getElementById('letra-display').innerText = letraFinal ? letraFinal : "A";
+            document.getElementById('letra-display').innerText = letraFinal;
         }
 
         function omitirLetra() {
@@ -557,8 +575,10 @@
             juegoActivo = false;
             clearTimeout(timerID);
             
+            // Sonido Explosión
             playSyntheticExplosion();
 
+            // Meme + Backup
             let randomMeme = Math.floor(Math.random() * CANTIDAD_MEMES) + 1;
             let memeAudio = new Audio(`memes/${randomMeme}.mp3`);
             let backupAudio = new Audio('memes/1.mp3');
@@ -575,6 +595,7 @@
                 });
             }, 800);
             
+            // Visual
             const hayPenitencias = document.getElementById('opt-penitencias').checked;
             const resultadoDisplay = document.getElementById('resultado-final');
             const mensajeModal = document.getElementById('modal-mensaje');
@@ -595,6 +616,7 @@
             mensajeModal.innerText = textoResultado;
 
             showScreen('screen-end');
+            
             modal.classList.add('active');
 
             if(navigator.vibrate) navigator.vibrate([1000, 200, 1000]);
@@ -605,39 +627,15 @@
             showScreen('screen-end');
         }
 
-        function aceptarReto() { cerrarModal(); }
+        function aceptarReto() {
+            cerrarModal();
+        }
 
         function soyUnaLoca() {
             let audioLoca = new Audio('memes/15a.mp3');
             audioLoca.play().catch(e => console.log(e));
             cerrarModal();
         }
-
-        const formSugerencias = document.getElementById("form-sugerencias");
-        formSugerencias.addEventListener("submit", async (e) => {
-            e.preventDefault();
-            const btn = formSugerencias.querySelector("button");
-            const originalText = btn.innerText;
-            btn.innerText = "Enviando...";
-            btn.disabled = true;
-
-            const data = new FormData(formSugerencias);
-            try {
-                await fetch(formSugerencias.action, {
-                    method: formSugerencias.method,
-                    body: data,
-                    headers: { 'Accept': 'application/json' }
-                });
-                alert("¡Mensaje recibido! Gracias, mor.");
-                formSugerencias.reset();
-                showScreen('screen-home'); 
-            } catch (error) {
-                alert("Uy, hubo un error enviando. Intenta más tarde.");
-            } finally {
-                btn.innerText = originalText;
-                btn.disabled = false;
-            }
-        });
     </script>
 </body>
 </html>
