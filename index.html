@@ -465,4 +465,300 @@
             "Haga masajes al de la derecha por 1 min", "Haga como un bebé llorando", "Imite el sonido de una moto prendiendo",
             "Haga el baile del 'Aserejé'", "Cante el Himno Nacional con la mano en el pecho", "Haga como si le estuviera dando un ataque",
             "Imite a un político corrupto", "Haga de cuenta que es un influencer vendiendo fajas", "Haga el sonido de un orgasmo fingido",
-            "Imite a Betty la Fea ri
+            "Imite a Betty la Fea riéndose", "Haga como un gato en celo", "Chupezarle el dedo gordo del pie al de la izquierda",
+            "Lamer el piso (o amagar)", "Hacer fondo blanco de rodillas", "Imitar a un borracho cansón", "Cantar una de Darío Gómez",
+            "Hacer twerking en la pared", "Imitar a la Liendra", "Decir el abecedario al revés (si falla, bebe)", 
+            "Hacer la pose de 'La Trevi' en el piso", "Gritar '¡Qué viva el Paro!'", "Imitar a un ñero pidiendo plata",
+            "Hacer como si estuviera en una película de terror", "Bailar una champeta solo", "Hacer el paso del robot",
+            "Cantar 'Rata de dos patas' señalando a alguien", "Hacer como un mico", "Imitar a un comentarista de fútbol gritando gol",
+            "Hacer caras feas para una selfie grupal", "Dejarse pintar la cara con un marcador", "Quitarse una prenda (que no sea ropa interior)",
+            "Hacer 5 sapitos", "Darle un beso en la mejilla al de la izquierda", "Hacer como si estuviera en un bus lleno"
+        ];
+
+        let bolsaPenitencias = [];
+
+        function llenarBolsaPenitencias() {
+            bolsaPenitencias = [...DB_PENITENCIAS];
+            bolsaPenitencias.sort(() => Math.random() - 0.5);
+        }
+
+        const DB_TEMAS = {
+            general: ["Personajes de Betty la Fea", "Personajes de Pedro el Escamoso", "Famosos Colombianos muertos", "Presentadoras de TV", "Influencers Colombianos", "Canciones de Diomedes", "Cantantes de Reggaeton", "Jugadores de la Selección", "Comida de la calle", "Dulces de tienda", "Marcas de Cerveza", "Sabores de helado", "Frutas colombianas", "Agüeros de Diciembre", "Groserías Colombianas", "Excusas para llegar tarde", "Mentiras de Hombres", "Mentiras de Mujeres", "Cosas que uno compra fiao", "Remedios de la abuela", "Frases de Mamá", "Cosas que dan Guayabo Moral", "Programas de TV viejos", "Marcas de ropa interior barata", "Cosas que uno guarda bajo el colchón", "Mitos urbanos", "Posiciones sexuales", "Lugares para echar un polvo", "Apodos para el pene/vagina", "Motivos de divorcio", "Cosas que se dicen en el sexo", "Tipos de condones", "Juguetes sexuales", "Cosas que matan la pasión", "Fantasías sexuales comunes", "Excusas para no culiar", "Cosas que uno hace borracho", "Tipos de Vecinos molestos", "Nombres de Señora del aseo", "Nombres de Celadores", "Cosas que uno se roba de un hotel", "Marcas de celulares viejos", "Oficios varios", "Instrumentos musicales", "Cosas que uno pierde en una rumba", "Villanos de Telenovelas", "Juegos de infancia", "Marcas de carros en Colombia", "Tipos de borrachos", "Canciones para planchar", "Apodos para suegras", "Cosas que uno dice en una entrevista", "Excusas para terminar una relación", "Nombres de bancos", "Marcas de arroz", "Partes del cuerpo que duelen con la edad", "Cosas que uno busca en Google", "Realities Colombianos", "Marcas de papel higiénico", "Cosas que uno pide en una droguería", "Nombres de centros comerciales", "Tipos de aretes", "Utensilios de cocina", "Cosas que hay en una billetera", "Marcas de Jabón", "Frases de Conductor de Bus", "Nombres de Perros Criollos", "Marcas de Motos", "Cosas que huelen feo", "Platos de Navidad", "Villancicos famosos", "Regalos malos de amigo secreto", "Emisoras de radio", "Marcas de ropa cara", "Marcas de zapatos escolares", "Tipos de taxistas", "Vendedores ambulantes", "Cosas que se venden en un semáforo", "Frases de cajero automático", "Cosas que uno empeña", "Piropos de albañil"],
+            paisa: ["Nombres de Neas", "Barrios calientes de Medellín", "Estaciones del Metro", "Pueblos de Antioquia", "Nombres de Grilla", "Nombres de Chuzos de la 70", "Platos típicos paisas", "Ingredientes de Bandeja Paisa", "Marcas de Guaro", "Cosas de una Finca", "Nombres de Moteles en Medallo", "Centros Comerciales de Medellín", "Dichos Paisas", "Cosas que se venden en los buses", "Apodos de Narcos", "Sitios pa' puebliar", "Emisoras de Medellín", "Barrios de Bello", "Barrios de Itagüí", "Comidas rápidas de barrio", "Parques de Medellín", "Apodos para los parceros", "Palabras Neas", "Nombres de fincas", "Estaciones del Metroplús", "Rutas de buses de Medallo", "Centros Comerciales del Hueco", "Barrios de Envigado", "Sitios de rumba en el Lleras", "Marcas de ropa del Hueco", "Nombres de colegios públicos", "Platos con arepa", "Tipos de arepa paisa", "Miradores de Medellín", "Cosas que pasan en el Metro", "Personajes del centro de Medellín", "Pueblos del Suroeste", "Pueblos del Oriente", "Sitios para comer sancocho", "Veredas de Santa Elena", "Barrios de Robledo", "Barrios de Belén", "Cosas de la Feria de las Flores", "Silleteros famosos", "Trovas famosas", "Palabras de abuelos paisas", "Sitios para ir a 'moteliar'", "Comida de carretera", "Dulces de pueblo", "Marcas de aguardiente tapa azul/roja", "Sitios de rumba en La 33", "Cosas que uno hace en Guatapé", "Nombres de 'plazas' de vicio famosas (Barrios)", "Puentes de Medellín", "Cerros tutelares", "Bibliotecas públicas", "Universidades de Medellín"],
+            rolo: ["Estaciones de Transmilenio", "Barrios de Gomelos", "Planes de Domingo en Bogotá", "Cosas que pasan en el Transmi", "Ingredientes del Ajiaco", "Centros Comerciales de Bogotá", "Pueblos de Cundinamarca", "Palabras de Rolo", "Excusas por el trancón", "Sitios para ir a Monserrate", "Nombres de Universidades de Bogotá", "Chaquetas o Ropa de frío", "Zonas de rumba en Bogotá", "Comida de piqueteadero", "Alcaldes de Bogotá", "Parques de Bogotá", "Barrios peligrosos de Bogotá", "Universidades públicas vs privadas", "Emisoras de Bogotá", "Portales de Transmilenio", "Sitios para comer en la Calera", "Planes de 'Sopó'", "Cosas que se compran en el 7 de Agosto", "Partes de un Ajiaco", "Tipos de Tamal", "Barrios del Sur", "Barrios del Norte", "Sitios de rumba en la 85", "Sitios de rumba en la Primera de Mayo", "Teatros de Bogotá", "Museos de Bogotá", "Cosas que pasan en la Séptima", "Personajes del centro de Bogotá", "Vendedores de Transmilenio", "Rutas del SITP", "Centros Comerciales del Norte", "Centros Comerciales del Sur", "Pueblos de la Sabana", "Postres rolos (Cuajada, etc)", "Tipos de Chaqueta", "Lugares para pedir matrimonio en Bogotá", "Bibliotecas de Bogotá", "Platos de la Plaza de Paloquemao", "Sitios para comprar ropa usada", "Discotecas de Chapinero", "Bares de rock en Bogotá", "Parques de diversiones", "Dulces santafereños", "Iglesias del centro", "Mitos de Bogotá"],
+            costeno: ["Dichos Costeños", "Comida Frita Costeña", "Comparsas del Carnaval", "Playas de la Costa", "Jugadores del Junior", "Canciones de Champeta", "Pueblos de la Costa", "Apodos costeños", "Cosas que dan calor", "Vallenatos corta venas", "Animales de la costa", "Ingredientes de un sancocho e' pescao", "Lugares de Barranquilla", "Lugares de Cartagena", "Barrios de Barranquilla", "Barrios de Cartagena", "Barrios de Santa Marta", "Platos con Guineo", "Tipos de Bollo", "Tipos de Suero", "Palabras costeñas (Eche, Nojoda)", "Nombres de Picós famosos", "Playas del Tayrona", "Sitios turísticos de la Costa", "Comida de calle costeña", "Frutas costeñas (Corozo, Níspero)", "Cantantes de Vallenato", "Acordeoneros famosos", "Festivales de la Costa", "Personajes del Carnaval", "Disfraces del Carnaval", "Tipos de pescado", "Comida de Semana Santa", "Dulces de Semana Santa", "Sitios para rumbear en Cartagena", "Sitios para rumbear en Barranquilla", "Centros Comerciales de la Costa", "Ríos de la Costa", "Leyendas costeñas (El hombre caimán)", "Cosas que uno hace en la playa", "Vendedores de playa", "Transporte en la costa (Mototaxi)", "Nombres de burras famosas", "Apodos de borrachos", "Cosas que pasan cuando se va la luz", "Juegos de dominó", "Marcas de Ron costeño"],
+            valluno: ["Dulces Vallunos", "Grupos de Salsa", "Palabras Caleñas", "Barrios de Cali", "Ingredientes del Cholado", "Pasos de Salsa", "Sitios de la Feria de Cali", "Platos típicos del Valle", "Nombres de Pandebono", "Ríos del Valle", "Sitios para bailar salsa", "Ingredientes del Champús", "Ingredientes del Aborrajado", "Tipos de Lulada", "Pueblos del Valle", "Balnearios del Valle", "Sitios para ir a comer en Cali", "Barrios peligrosos de Cali", "Barrios de ricos de Cali", "Estaciones del MIO", "Cosas que pasan en el MIO", "Centros Comerciales de Cali", "Cerros de Cali", "Personajes de Cali", "Orquestas de Salsa", "Cantantes de Salsa", "Canciones del Grupo Niche", "Canciones de Guayacán", "Platos de la Galería Alameda", "Frutas del Valle (Chontaduro)", "Cosas que se le echan al Chontaduro", "Sitios turísticos de Buga", "Sitios de Palmira", "Ingredientes del Sancocho Valluno", "Tipos de Manjarblanco", "Marcas de Aguardiente (Blanco)", "Sitios para 'azotar baldosa'", "Dichos vallunos (Ve, Oís)", "Cosas que uno compra en el semáforo en Cali", "Universidades de Cali", "Parques de Cali", "Mitos de Cali (Buziraco)", "Equipos de fútbol del Valle", "Jugadores del América/Cali"],
+            santander: ["Palabras Santandereanas", "Platos típicos", "Pueblos de Santander", "Cosas que hacen arrechar", "Sitios turísticos de Santander", "Groserías Santandereanas", "Marcas de Gaseosa", "Comidas rápidas de Bucaramanga", "Ingredientes del Mute", "Tipos de Hormigas Culonas", "Sitios de Panachi", "Pueblos bonitos de Santander", "Barrios de Bucaramanga", "Centros Comerciales de Bucaramanga", "Parques de Bucaramanga", "Comida con pepitoria", "Tipos de Arepa Santandereana", "Cosas que se comen con piña", "Dichos de las abuelas santandereanas", "Motivos para pelear", "Cosas que se venden en San Andresito", "Sitios para ir a Girón", "Sitios de Barichara", "Deportes extremos en San Gil", "Ríos de Santander", "Personajes de Santander", "Cantantes santandereanos", "Futbolistas del Bucaramanga", "Comida de calle en Bucaramanga", "Marcas de zapatos (Bucaramanga)", "Dulces de Santander (Bocadillo)", "Tipos de Bocadillo Veleño", "Cosas que uno hace en un asado", "Sitios para tomar pola", "Nombres de tiendas en Santander", "Frases de papás santandereanos"]
+        };
+        
+        function generarMazoLetras() {
+            let mazo = [];
+            const comunes = ['A','E','O','S','R','N','I','L','C','M','P','T','D'];
+            const medias = ['B','G','V','F','H','J','U'];
+            const dificiles = ['Q','Z','Ñ','Y'];
+            const imposibles = ['K','W','X'];
+            comunes.forEach(l => mazo.push(l,l,l,l));
+            medias.forEach(l => mazo.push(l,l));
+            dificiles.forEach(l => mazo.push(l));
+            imposibles.forEach(l => mazo.push(l));
+            return mazo;
+        }
+
+        let bolsaTemas = [];
+        let bolsaLetras = [];
+        let juegoActivo = false;
+        let tiempoInicio = 0;
+        let duracionTotal = 0;
+        let timerID = null;
+
+        const CONFIG_TIEMPO = {
+            peque: { min: 30, max: 45 },
+            medio: { min: 50, max: 70 },
+            grande: { min: 90, max: 130 }
+        };
+        let rangoSeleccionado = CONFIG_TIEMPO.medio;
+
+        function armarBolsaTemas() {
+            let nuevaBolsa = [];
+            if(document.getElementById('reg-general').checked) nuevaBolsa.push(...DB_TEMAS.general);
+            if(document.getElementById('reg-paisa').checked) nuevaBolsa.push(...DB_TEMAS.paisa);
+            if(document.getElementById('reg-rolo').checked) nuevaBolsa.push(...DB_TEMAS.rolo);
+            if(document.getElementById('reg-costeno').checked) nuevaBolsa.push(...DB_TEMAS.costeno);
+            if(document.getElementById('reg-valluno').checked) nuevaBolsa.push(...DB_TEMAS.valluno);
+            if(document.getElementById('reg-santander').checked) nuevaBolsa.push(...DB_TEMAS.santander);
+
+            if(nuevaBolsa.length === 0) {
+                alert("¡Oiga! Seleccione al menos una región pues.");
+                document.getElementById('reg-general').checked = true;
+                nuevaBolsa.push(...DB_TEMAS.general);
+            }
+            nuevaBolsa.sort(() => Math.random() - 0.5);
+            return nuevaBolsa;
+        }
+
+        function llenarBolsaLetras() { 
+            bolsaLetras = generarMazoLetras();
+            bolsaLetras.sort(() => Math.random() - 0.5); 
+        }
+
+        function sacarDeBolsa(bolsa, funcionLlenado) {
+            // FIX: Validar si la bolsa esta vacía ANTES de sacar
+            if (bolsa.length === 0) {
+                if(funcionLlenado === "temas") { bolsaTemas = armarBolsaTemas(); return bolsaTemas.pop(); }
+                else if(funcionLlenado === "penitencias") { llenarBolsaPenitencias(); return bolsaPenitencias.pop(); }
+                else { funcionLlenado(); } // Llenar letras
+            }
+            
+            // Re-chequeo de seguridad: si aun esta vacía (caso raro), forzar llenado
+            if (bolsa.length === 0) {
+                 if(funcionLlenado === "temas") bolsaTemas = armarBolsaTemas();
+                 else if(funcionLlenado === "penitencias") llenarBolsaPenitencias();
+                 else funcionLlenado();
+            }
+
+            const indiceRandom = Math.floor(Math.random() * bolsa.length);
+            const item = bolsa[indiceRandom];
+            bolsa.splice(indiceRandom, 1);
+            return item;
+        }
+
+        window.onload = () => {
+            llenarBolsaLetras();
+            llenarBolsaPenitencias();
+            showScreen('screen-home');
+        };
+
+        function verificarClave() {
+            // Clave desactivada por ahora
+            showScreen('screen-home');
+        }
+
+        function configurarYJugar(tipo) {
+            initAudio();
+            if(tipo === 'peque') rangoSeleccionado = CONFIG_TIEMPO.peque;
+            else if(tipo === 'medio') rangoSeleccionado = CONFIG_TIEMPO.medio;
+            else if(tipo === 'grande') rangoSeleccionado = CONFIG_TIEMPO.grande;
+
+            bolsaTemas = armarBolsaTemas();
+            girarRuleta();
+            showScreen('screen-roulette');
+        }
+
+        function otraRonda() {
+            girarRuleta();
+            showScreen('screen-roulette');
+        }
+
+        function cancelarPartida() {
+            juegoActivo = false;
+            clearTimeout(timerID);
+            showScreen('screen-setup');
+        }
+
+        function girarRuleta() {
+            document.getElementById('controles-tema').style.display = 'none';
+            const display = document.getElementById('tema-display');
+            let i = 0;
+            const animacion = setInterval(() => {
+                display.innerText = bolsaTemas[Math.floor(Math.random()*bolsaTemas.length)];
+                i++;
+                if (i > 15) {
+                    clearInterval(animacion);
+                    const temaFinal = sacarDeBolsa(bolsaTemas, "temas");
+                    display.innerText = temaFinal;
+                    document.getElementById('controles-tema').style.display = 'flex';
+                }
+            }, 80);
+        }
+
+        function iniciarJuego() {
+            initAudio();
+            showScreen('screen-game');
+            document.getElementById('tema-juego').innerText = document.getElementById('tema-display').innerText;
+            juegoActivo = true;
+            cambiarLetra();
+            
+            const segundosRandom = Math.floor(Math.random() * (rangoSeleccionado.max - rangoSeleccionado.min + 1)) + rangoSeleccionado.min;
+            duracionTotal = segundosRandom * 1000;
+            tiempoInicio = Date.now();
+            
+            motorDeJuego(); 
+        }
+
+        function motorDeJuego() {
+            if (!juegoActivo) return;
+
+            const ahora = Date.now();
+            const tiempoTranscurrido = ahora - tiempoInicio;
+            const tiempoRestante = duracionTotal - tiempoTranscurrido;
+
+            if (tiempoRestante <= 0) {
+                finJuego();
+                return;
+            }
+
+            playTickSound();
+
+            const porcentajeCompletado = tiempoTranscurrido / duracionTotal; 
+            const delayMax = 1200; 
+            const delayMin = 100;
+            let proximoDelay = delayMax - (Math.pow(porcentajeCompletado, 2.5) * (delayMax - delayMin));
+            
+            if (proximoDelay < 100) proximoDelay = 100;
+
+            if (tiempoRestante < proximoDelay) {
+                timerID = setTimeout(motorDeJuego, tiempoRestante);
+            } else {
+                timerID = setTimeout(motorDeJuego, proximoDelay);
+            }
+        }
+
+        function cambiarLetra() {
+            const letraFinal = sacarDeBolsa(bolsaLetras, llenarBolsaLetras);
+            document.getElementById('letra-display').innerText = letraFinal ? letraFinal : "A";
+        }
+
+        function omitirLetra() {
+            if (!juegoActivo) return;
+            playPenaltySound();
+            const penalizacion = duracionTotal * 0.15;
+            tiempoInicio -= penalizacion; 
+            cambiarLetra();
+        }
+
+        function finJuego() {
+            juegoActivo = false;
+            clearTimeout(timerID);
+            
+            // 1. SONIDO DE EXPLOSIÓN SINTÉTICA
+            playSyntheticExplosion();
+
+            // 2. SONIDO DE MEME (Secundario)
+            let randomMeme = Math.floor(Math.random() * CANTIDAD_MEMES) + 1;
+            let memeAudio = new Audio(`memes/${randomMeme}.mp3`);
+            let backupAudio = new Audio('memes/1.mp3');
+            
+            memeAudio.onerror = function() {
+                backupAudio.currentTime = 0;
+                backupAudio.play().catch(e => console.log("Backup audio error:", e));
+            };
+            
+            // Retardo leve
+            setTimeout(() => {
+                memeAudio.play().catch(e => {
+                    backupAudio.currentTime = 0;
+                    backupAudio.play();
+                });
+            }, 800);
+            
+            // VISUAL
+            const hayPenitencias = document.getElementById('opt-penitencias').checked;
+            const resultadoDisplay = document.getElementById('resultado-final');
+            const mensajeModal = document.getElementById('modal-mensaje');
+            const modal = document.getElementById('modal-explosion');
+            
+            let textoResultado = "";
+            
+            if (hayPenitencias) {
+                const penitencia = sacarDeBolsa(bolsaPenitencias, "penitencias");
+                textoResultado = "😈 " + penitencia.toUpperCase();
+                resultadoDisplay.style.color = "#D32F2F";
+            } else {
+                textoResultado = "FONDO BLANCO O PENITENCIA";
+                resultadoDisplay.style.color = "#111";
+            }
+
+            resultadoDisplay.innerText = textoResultado;
+            mensajeModal.innerText = textoResultado;
+
+            showScreen('screen-end');
+            
+            // MOSTRAR MODAL
+            modal.classList.add('active');
+
+            if(navigator.vibrate) navigator.vibrate([1000, 200, 1000]);
+        }
+
+        function cerrarModal() {
+            document.getElementById('modal-explosion').classList.remove('active');
+            showScreen('screen-end'); // Aseguramos que la pantalla de fondo sea la final
+        }
+
+        function aceptarReto() {
+            cerrarModal();
+        }
+
+        function soyUnaLoca() {
+            let audioLoca = new Audio('memes/15a.mp3');
+            audioLoca.play().catch(e => console.log(e));
+            cerrarModal();
+        }
+
+        const formSugerencias = document.getElementById("form-sugerencias");
+        formSugerencias.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const btn = formSugerencias.querySelector("button");
+            const originalText = btn.innerText;
+            btn.innerText = "Enviando...";
+            btn.disabled = true;
+
+            const data = new FormData(formSugerencias);
+            try {
+                await fetch(formSugerencias.action, {
+                    method: formSugerencias.method,
+                    body: data,
+                    headers: { 'Accept': 'application/json' }
+                });
+                alert("¡Mensaje recibido! Gracias, mor.");
+                formSugerencias.reset();
+                showScreen('screen-home'); 
+            } catch (error) {
+                alert("Uy, hubo un error enviando. Intenta más tarde.");
+            } finally {
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }
+        });
+    </script>
+</body>
+</html>
